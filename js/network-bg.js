@@ -63,7 +63,7 @@
           var dx = a.x - b.x, dy = a.y - b.y;
           var d = Math.sqrt(dx * dx + dy * dy);
           if (d < linkDist) {
-            ctx.strokeStyle = "rgba(120,130,255," + (0.18 * (1 - d / linkDist)) + ")";
+            ctx.strokeStyle = "rgba(255,255,255," + (0.22 * (1 - d / linkDist)) + ")";
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
@@ -76,7 +76,7 @@
           var md = Math.sqrt(mdx * mdx + mdy * mdy);
           var mDist = linkDist * 1.35;
           if (md < mDist) {
-            ctx.strokeStyle = "rgba(154,162,255," + (0.38 * (1 - md / mDist)) + ")";
+            ctx.strokeStyle = "rgba(255,255,255," + (0.45 * (1 - md / mDist)) + ")";
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -90,7 +90,7 @@
         var p = particles[i];
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(148,156,255,0.75)";
+        ctx.fillStyle = "rgba(255,255,255,0.7)";
         ctx.fill();
       }
 
