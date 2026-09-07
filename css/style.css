@@ -1,5 +1,5 @@
 /* =========================================================
-   WebMakers — design tokens
+   WebMakers . design tokens
    ========================================================= */
 :root{
   /* brand */
@@ -172,9 +172,13 @@ button{ font-family: inherit; }
 
 .brand{ display: flex; align-items: center; }
 .brand img{ height: 26px; width: auto; }
-.brand .logo-dark{ display: none; }
-html[data-theme="dark"] .brand .logo-light{ display: none; }
-html[data-theme="dark"] .brand .logo-dark{ display: block; }
+
+/* Theme-aware logo swap — used in the header brand AND the footer brand.
+   Any element can drop in an .logo-light + .logo-dark pair and the right
+   one will show automatically for the active theme. */
+.logo-dark{ display: none; }
+html[data-theme="dark"] .logo-light{ display: none; }
+html[data-theme="dark"] .logo-dark{ display: block; }
 
 .nav-desktop{
   display: flex;
@@ -361,28 +365,6 @@ body.nav-open{ overflow: hidden; }
 }
 .cta-band.network-bg > *{ position: relative; z-index: 1; }
 
-.stat-row{
-  display: grid;
-  grid-template-columns: repeat(4,1fr);
-  gap: 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-.stat{
-  padding: 28px var(--pad);
-  border-left: 1px solid var(--line);
-  text-align: left;
-}
-.stat:first-child{ border-left: none; padding-left: 0; }
-.stat b{
-  display: block;
-  font-family: var(--font-display);
-  font-size: 2rem;
-  color: var(--ink);
-  font-weight: 600;
-}
-.stat span{ font-size: .88rem; color: var(--slate); }
-
 /* =========================================================
    Section headers
    ========================================================= */
@@ -416,13 +398,26 @@ body.nav-open{ overflow: hidden; }
 }
 .signal-item h3{ margin-bottom: 8px; }
 .signal-item p{ margin: 0; max-width: 56ch; }
-.signal-item .tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.signal-item .tags{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
 .signal-item .tags span{
-  font-size: .78rem;
-  padding: 5px 10px;
-  border: 1px solid var(--line-strong);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-display);
+  font-size: .8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 7px 14px 7px 12px;
   border-radius: 100px;
-  color: var(--slate);
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+.signal-item .tags span::before{
+  content: "";
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--blue);
+  flex-shrink: 0;
 }
 
 /* =========================================================
@@ -472,6 +467,16 @@ body.nav-open{ overflow: hidden; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  transition: transform .5s var(--ease);
+}
+.project-card:hover .project-preview{ transform: scale(1.035); }
+
+.project-preview::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 50% 115%, rgba(255,255,255,0.14), transparent 60%);
+  pointer-events: none;
 }
 .project-preview .preview-label{
   position: relative;
@@ -479,6 +484,17 @@ body.nav-open{ overflow: hidden; }
   text-align: center;
   padding: 0 10%;
 }
+.project-preview .preview-icon{
+  width: 46px; height: 46px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.project-preview .preview-icon svg{ width: 21px; height: 21px; }
 .project-preview .preview-label .kicker{
   font-family: var(--font-display);
   font-size: .78rem;
@@ -497,6 +513,7 @@ body.nav-open{ overflow: hidden; }
 
 .preview--daxy{ background: radial-gradient(120% 140% at 20% 10%, #1c1030 0%, #0a0714 55%, #050308 100%); color: #f2ecff; }
 .preview--daxy .kicker{ color: #b79bff; }
+.preview--daxy .preview-icon{ color: #cdb8ff; }
 .preview--daxy::after{
   content:"";
   position:absolute; inset:0;
@@ -506,6 +523,13 @@ body.nav-open{ overflow: hidden; }
 
 .preview--futebol{ background: linear-gradient(155deg, #16210f 0%, #0c1108 60%, #060903 100%); color: #f4e9c8; }
 .preview--futebol .kicker{ color: #c9a227; }
+.preview--futebol .preview-icon{ color: #d9b95c; }
+.preview--futebol::after{
+  content:"";
+  position:absolute; inset:0;
+  background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0px, rgba(255,255,255,.035) 1px, transparent 1px, transparent 4px);
+  mix-blend-mode: overlay;
+}
 
 .project-body{ padding: 22px 24px 26px; }
 .project-body h3{ margin-bottom: 6px; }
@@ -630,23 +654,49 @@ body.nav-open{ overflow: hidden; }
 .price-card li svg{ flex-shrink: 0; margin-top: 3px; color: var(--blue); }
 
 /* =========================================================
-   CTA band
+   CTA band — a fixed blue-brand moment (like .hero, it doesn't
+   flip with the light/dark toggle, so it always looks intentional)
    ========================================================= */
 .cta-band{
-  background: var(--ink);
-  color: var(--paper);
-  border-radius: var(--radius-m);
-  padding: 56px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-deep) 100%);
+  color: #fff;
+  border-radius: 20px;
+  padding: 60px 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 32px;
   flex-wrap: wrap;
+  box-shadow: 0 24px 60px -24px rgba(42,47,184,0.55);
 }
-.cta-band h2{ color: var(--paper); margin: 0; }
-.cta-band p{ color: color-mix(in srgb, var(--paper) 65%, transparent); margin: 8px 0 0; }
-.cta-band .btn-primary{ background: var(--blue); }
-html[data-theme="dark"] .cta-band{ background: var(--cloud); border: 1px solid var(--line-strong); }
+.cta-band::before,
+.cta-band::after{
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.cta-band::before{
+  width: 380px; height: 380px;
+  top: -180px; right: -80px;
+  background: radial-gradient(circle, rgba(255,255,255,0.16) 0%, transparent 70%);
+}
+.cta-band::after{
+  width: 260px; height: 260px;
+  bottom: -160px; left: 8%;
+  background: radial-gradient(circle, rgba(255,255,255,0.10) 0%, transparent 70%);
+}
+.cta-band h2{ color: #fff; margin: 0; }
+.cta-band p{ color: rgba(255,255,255,0.78); margin: 8px 0 0; }
+.cta-band .btn-primary{ background: #fff; color: var(--blue-deep); }
+.cta-band .btn-primary:hover{ background: rgba(255,255,255,0.88); }
+
+@media (max-width: 720px){
+  .cta-band{ padding: 40px 32px; flex-direction: column; align-items: flex-start; border-radius: 16px; }
+}
 
 /* =========================================================
    FAQ accordion
@@ -843,10 +893,6 @@ html[data-theme="dark"] .cta-band{ background: var(--cloud); border: 1px solid v
 @media (max-width: 980px){
   .hero-badge{ display: none; }
   .hero-tagline-vertical{ display: none; }
-  .stat-row{ grid-template-columns: repeat(2,1fr); }
-  .stat:nth-child(3){ border-left: none; padding-left: 0; }
-  .stat:nth-child(1), .stat:nth-child(2){ border-bottom: 1px solid var(--line); padding-bottom: 24px; }
-  .stat:nth-child(3), .stat:nth-child(4){ padding-top: 24px; }
   .project-grid{ grid-template-columns: 1fr; }
   .plan-grid{ grid-template-columns: 1fr; }
   .price-grid{ grid-template-columns: 1fr; }
@@ -863,7 +909,6 @@ html[data-theme="dark"] .cta-band{ background: var(--cloud); border: 1px solid v
   .nav-desktop{ display: none; }
   .nav-toggle{ display: flex; }
   .section{ padding: 64px 0; }
-  .cta-band{ padding: 36px 28px; flex-direction: column; align-items: flex-start; }
   .footer-top{ grid-template-columns: 1fr; }
   .steps{ grid-template-columns: 1fr; }
   .step{ border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--line); padding-top: 24px; }
