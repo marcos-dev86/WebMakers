@@ -1,5 +1,5 @@
 /* =========================================================
-   WebMakers . design tokens
+   WebMakers — design tokens
    ========================================================= */
 :root{
   /* brand */
@@ -363,7 +363,7 @@ body.nav-open{ overflow: hidden; }
   display: block;
   pointer-events: none;
 }
-.cta-band.network-bg > *{ position: relative; z-index: 1; }
+.cta-band.network-bg > *:not(.network-canvas){ position: relative; z-index: 1; }
 
 /* =========================================================
    Section headers
@@ -921,4 +921,5 @@ body.nav-open{ overflow: hidden; }
   .btn-lg{ padding: 14px 24px; width: 100%; }
   .hero-ctas .btn{ width: 100%; }
   .wa-float{ width: 52px; height: 52px; right: 16px; bottom: 16px; }
+  .whatsapp-card .btn-block{ width: calc(100% - 80px); }
 }
