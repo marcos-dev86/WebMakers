@@ -43,7 +43,8 @@ html[data-theme="dark"]{
 }
 
 *, *::before, *::after{ box-sizing: border-box; }
-html{ scroll-behavior: smooth; }
+html{ scroll-behavior: smooth; overscroll-behavior-y: none; }
+body{ overscroll-behavior-y: none; }
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior: auto; }
   *, *::before, *::after{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
@@ -914,6 +915,16 @@ body.nav-open{ overflow: hidden; }
   .step{ border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--line); padding-top: 24px; }
   .step:first-child{ border-top: none; padding-top:0; }
   .section-head{ flex-direction: column; align-items: flex-start; }
+
+  /* backdrop-filter on a fixed header is a known source of GPU
+     compositing glitches (ghosted/smeared frames while scrolling)
+     on Android Chrome. Drop the blur on small screens and use a
+     near-opaque background instead — same visual effect, no glitch. */
+  .site-header{
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: color-mix(in srgb, var(--paper) 97%, transparent);
+  }
 }
 
 @media (max-width: 480px){
