@@ -178,8 +178,16 @@ button{ font-family: inherit; }
    Any element can drop in an .logo-light + .logo-dark pair and the right
    one will show automatically for the active theme. */
 .logo-dark{ display: none; }
-html[data-theme="dark"] .logo-light{whidisplay: none; }
+html[data-theme="dark"] .logo-light{ display: none; }
 html[data-theme="dark"] .logo-dark{display: block; }
+
+/* Minimalist mark (icon only, no wordmark) used in the fixed header.
+   Same light/dark swap pattern as the full logo above. */
+.brand .mark-light,
+.brand .mark-dark{ height: 34px; width: auto; }
+.mark-dark{ display: none; }
+html[data-theme="dark"] .mark-light{ display: none; }
+html[data-theme="dark"] .mark-dark{ display: block; }
 
 .nav-desktop{
   display: flex;
