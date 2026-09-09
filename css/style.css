@@ -178,8 +178,8 @@ button{ font-family: inherit; }
    Any element can drop in an .logo-light + .logo-dark pair and the right
    one will show automatically for the active theme. */
 .logo-dark{ display: none; }
-html[data-theme="dark"] .logo-light{height:20px; width:auto; whidisplay: none; }
-html[data-theme="dark"] .logo-dark{height:20px; width:auto; display: block; }
+html[data-theme="dark"] .logo-light{whidisplay: none; }
+html[data-theme="dark"] .logo-dark{display: block; }
 
 .nav-desktop{
   display: flex;
